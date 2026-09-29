@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Folio">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#b45309"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <rect x="86" y="86" width="340" height="340" rx="24" fill="none" stroke="#ffffff" stroke-opacity="0.3" stroke-width="10"/>
+  <path fill="#ffffff" d="M196 396V116h132v40H242v80h76v40h-76v120h-46z"/>
+</svg>

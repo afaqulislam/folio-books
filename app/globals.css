@@ -2,20 +2,142 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --canvas-rgb: 251 248 243;
+    --canvas-alt-rgb: 244 239 230;
+    --surface-rgb: 255 255 255;
+    --ink-rgb: 28 25 23;
+    --ink-soft-rgb: 87 83 78;
+    --muted-rgb: 138 129 122;
+    --line-rgb: 231 225 215;
+    --line-strong-rgb: 214 206 193;
+
+    --accent-rgb: 180 83 9;
+    --accent-hover-rgb: 146 64 14;
+    --accent-soft-rgb: 245 158 11;
+    --accent-tint-rgb: 254 243 199;
+    --accent-tint-border-rgb: 252 211 77;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --canvas-rgb: 16 14 12;
+      --canvas-alt-rgb: 23 20 15;
+      --surface-rgb: 27 24 21;
+      --ink-rgb: 247 243 236;
+      --ink-soft-rgb: 201 193 182;
+      --muted-rgb: 148 139 128;
+      --line-rgb: 48 42 36;
+      --line-strong-rgb: 68 60 51;
+
+      --accent-rgb: 217 119 6;
+      --accent-hover-rgb: 245 158 11;
+      --accent-soft-rgb: 251 191 36;
+      --accent-tint-rgb: 58 42 13;
+      --accent-tint-border-rgb: 107 74 18;
+    }
+  }
+
+  * {
+    border-color: rgb(var(--line-rgb) / 1);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: rgb(var(--canvas-rgb) / 1);
+    color: rgb(var(--ink-rgb) / 1);
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent-rgb) / 1);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: rgb(var(--accent-rgb) / 1);
+    color: #fff;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .display-xl {
+    @apply font-display text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-accent-tint-border bg-accent-tint px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-accent;
+  }
+
+  .section-title {
+    @apply font-display text-3xl font-bold leading-tight text-ink sm:text-4xl;
+  }
+
+  .section-sub {
+    @apply mt-2 text-muted;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-sm font-semibold text-ink-soft;
+  }
+
+  .field-input {
+    @apply w-full rounded-xl border border-line-strong bg-surface px-4 py-2.5 text-ink shadow-sm outline-none transition
+      placeholder:text-muted
+      focus:border-accent focus:ring-4 focus:ring-accent/15;
+  }
+
+  .field-error {
+    @apply mt-1.5 text-xs font-semibold text-red-600;
+  }
+
+  .btn {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition
+      active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-accent {
+    @apply btn bg-accent text-white shadow-lg shadow-accent/25 hover:bg-accent-hover hover:shadow-accent/35;
+  }
+
+  .btn-outline {
+    @apply btn border border-line-strong bg-transparent text-ink-soft hover:border-accent hover:text-accent;
+  }
+
+  .btn-soft {
+    @apply btn border border-accent-tint-border bg-accent-tint text-accent hover:bg-accent-soft hover:text-white;
+  }
+
+  .btn-quiet {
+    @apply btn border border-line bg-transparent text-muted hover:border-red-300 hover:bg-red-50 hover:text-red-600;
+  }
+
+  .card-book {
+    @apply flex flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-sm transition
+      hover:-translate-y-1.5 hover:border-accent-tint-border hover:shadow-2xl hover:shadow-accent/10;
+  }
+
+  .editable {
+    @apply rounded-md outline-none transition focus:bg-accent-tint focus:ring-2 focus:ring-accent/40;
+  }
+
+  .chip {
+    @apply cursor-pointer rounded-full border border-line-strong px-3.5 py-1.5 text-sm font-medium text-ink-soft transition
+      hover:border-accent hover:text-accent;
+  }
+
+  .chip-active {
+    @apply border-accent bg-accent text-white hover:text-white;
+  }
 }
