@@ -9,8 +9,8 @@
   <a href="https://github.com/afaqulislam/folio-books">
     <img src="https://img.shields.io/badge/GitHub-1c1917?style=flat-square&labelColor=d97706&color=1c1917&logo=github&logoColor=ffffff" alt="Source code">
   </a>
-  <img src="https://img.shields.io/badge/Next.js-15.0.3-000000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js 15.0.3">
-  <img src="https://img.shields.io/badge/React-19%20RC-1c1917?style=flat-square&labelColor=1c1917&color=d97706&logo=react&logoColor=61dafb" alt="React 19 release candidate">
+  <img src="https://img.shields.io/badge/Next.js-15.5.26-000000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js 15.5.26">
+  <img src="https://img.shields.io/badge/React-19.3.0-20232a?style=flat-square&logo=react&logoColor=61dafb" alt="React 19.3.0">
   <img src="https://img.shields.io/badge/TypeScript-strict-3178c6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript strict mode">
   <img src="https://img.shields.io/badge/Tailwind-3.4-06b6d4?style=flat-square&logo=tailwindcss&logoColor=38bdf8" alt="Tailwind CSS 3.4">
   <img src="https://img.shields.io/badge/License-MIT-1c1917?style=flat-square&labelColor=1c1917&color=d97706" alt="MIT License">
@@ -55,12 +55,12 @@ nothing ever leaves the browser.
 
 | Layer | Choice | Rationale |
 |---|---|---|
-| Framework | **Next.js 15.0.3** | App Router, Turbopack, file-based metadata, fully static output |
-| UI | **React 19 RC** | Concurrent rendering; `memo` keeps the grids cheap on every keystroke |
+| Framework | **Next.js 15.5.26** | App Router, Turbopack, file-based metadata, fully static output |
+| UI | **React 19.3.0** | Stable release; concurrent rendering, and `memo` keeps the grids cheap on every keystroke |
 | Language | **TypeScript 5.9.3** | `strict`, no `any`, no unchecked indexing |
 | Styling | **Tailwind CSS 3.4.15** | A custom token layer maps one accent across both themes |
 | Fonts | **`next/font`** | Inter + Playfair Display self-hosted — zero requests to Google |
-| Quality | **ESLint 8 + `tsc --noEmit`** | `next/core-web-vitals` and `next/typescript`, both exposed as scripts |
+| Quality | **ESLint 9 + `tsc --noEmit`** | Flat config (`eslint.config.mjs`) with `next/core-web-vitals` and `next/typescript`, both exposed as scripts |
 
 Runtime dependencies: `next`, `react`, `react-dom`. That is the whole list.
 
@@ -185,6 +185,14 @@ chips never disagree.
 **Scroll respects `prefers-reduced-motion`.** Smooth by default, instant when the user
 has asked for less movement.
 
+**Versions are pinned, and the overrides earn their keep.** `next` and `eslint-config-next`
+are held at the same patch (`15.5.26`) on purpose: that is the official 15.x security
+backport line, and letting the two drift apart is what reopens the hole that once failed a
+deploy. The single `overrides` entry pulls `@typescript-eslint/*` up to `8.71.0`, because the
+range `eslint-config-next` accepts resolves to `8.14.0`, whose `no-unused-expressions` rule
+throws on ESLint 9.39. Conversely `next` pins its own `postcss` to an exact version, so that
+one is deliberately left alone — overriding it is a build-time hang, not a fix.
+
 **Bugs found and fixed during a full audit**, kept here because they are the kind of thing
 that ships silently:
 
@@ -235,7 +243,8 @@ Treated as a requirement rather than a final pass:
 
 ## Getting started
 
-Requires **Node.js 18.18+**.
+Requires **Node.js 20.11+** (pinned in `engines`). The floor is set by the flat ESLint
+config, which reads `import.meta.dirname` — available from Node 20.11 onward.
 
 ```bash
 git clone https://github.com/afaqulislam/folio-books.git
@@ -254,7 +263,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | `npm run dev` | Dev server with Turbopack and fast refresh |
 | `npm run build` | Optimised production build |
 | `npm run start` | Serve the production build |
-| `npm run lint` | ESLint via `next lint` |
+| `npm run lint` | ESLint 9 via the ESLint CLI, reading `eslint.config.mjs` |
 | `npm run typecheck` | `tsc --noEmit` |
 
 > **Note:** `next build` and `next dev` both write to `.next/`. Stop the dev server
@@ -293,8 +302,6 @@ Stated plainly, because a demo that hides these teaches the wrong thing:
 - **No backend.** The newsletter validates and confirms, but nothing is sent anywhere.
 - **Covers are base64 in React state**, which grows memory on large images. A real product
   would upload to object storage and persist to a database.
-- **React 19 is pinned to a release candidate** (`19.0.0-rc-66855b96-20241106`), matching
-  the Next.js 15.0.3 scaffold. Both should move to stable together.
 
 These are scope decisions, not defects — but they are the first things to change if you
 fork this into production.
